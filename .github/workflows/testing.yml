@@ -17,10 +17,10 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: BACKEND - npm install
-        run: cd ./server & npm ci
+        run: cd ./server && npm ci
       - name: BACKEND - test
-        run: cd ./server & npm run test
+        run: cd ./server && npm run test
       - name: FRONTEND - npm install
-        run: cd ./client & npm ci
+        run: cd ./client && npm ci
       - name: FRONTEND - test
-        run: cd ./client & npm run test
+        run: cd ./client && npm run test
