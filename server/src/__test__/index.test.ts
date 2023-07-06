@@ -1,8 +1,6 @@
 import { server } from "../index";
 import supertest from "supertest";
 
-import request from "superagent";
-import { before } from "node:test";
 const user1 = supertest.agent(server);
 
 const requestWithSupertest = supertest(server);
