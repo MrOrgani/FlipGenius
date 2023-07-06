@@ -1,6 +1,6 @@
 import express from "express";
 
-import { protect } from "../middleware/authMiddleware";
+import { isAuth } from "../middleware/authMiddleware";
 import {
   getCollections,
   getCollection,
@@ -12,11 +12,11 @@ import { isOwner } from "../middleware/isOwner";
 
 const router = express.Router();
 
-router.route("/").get(protect, getCollections).post(protect, createCollection);
+router.route("/").get(isAuth, getCollections).post(isAuth, createCollection);
 router
   .route("/:collectionId")
-  .get(protect, getCollection)
-  .put(protect, isOwner, updateCollection)
-  .delete(protect, isOwner, deleteCollection);
+  .get(isAuth, getCollection)
+  .put(isAuth, isOwner, updateCollection)
+  .delete(isAuth, isOwner, deleteCollection);
 
 export { router };

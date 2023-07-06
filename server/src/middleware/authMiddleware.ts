@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import asyncHandler from "express-async-handler";
 import { userPrismaClient as Prisma } from "../models/userModel";
 
-const protect = asyncHandler(async (req, res, next) => {
+const isAuth = asyncHandler(async (req, res, next) => {
   let token;
 
   token = req.cookies.jwt;
@@ -22,9 +22,8 @@ const protect = asyncHandler(async (req, res, next) => {
 
       next();
     } catch (error) {
-      console.error(error);
       res.status(401);
-      throw new Error("Not authorized, token failed");
+      throw new Error("Not authorized, wrong token");
     }
   } else {
     res.status(401);
@@ -32,4 +31,4 @@ const protect = asyncHandler(async (req, res, next) => {
   }
 });
 
-export { protect };
+export { isAuth };

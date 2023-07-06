@@ -6,8 +6,14 @@ import bcrypt from "bcryptjs";
 
 // Register a user
 const registerUser = asyncHandler(async (req, res) => {
+  const { email, password, name } = req.body;
+  if (!email || !password) {
+    res.status(500);
+    throw new Error("User email or password is missing");
+  }
+
   const userExists = await Prisma.user.count({
-    where: { email: req.body.email },
+    where: { email: email },
   });
 
   if (userExists > 0) {
@@ -17,9 +23,9 @@ const registerUser = asyncHandler(async (req, res) => {
 
   const newUser = await Prisma.user.create({
     data: {
-      email: req.body.email,
-      name: req.body.name,
-      password: req.body.password,
+      email,
+      name,
+      password,
     },
   });
 
@@ -41,14 +47,20 @@ const registerUser = asyncHandler(async (req, res) => {
 });
 
 const authUser = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) {
+    res.status(500);
+    throw new Error("User email or password is missing");
+  }
+
   const user = await Prisma.user.findUnique({
-    where: { email: req.body.email },
+    where: { email },
   });
 
   if (user) {
-    bcrypt.compare(req.body.password, user["password"]);
+    bcrypt.compare(password, user["password"]);
   }
-  if (user && (await bcrypt.compare(req.body.password, user.password))) {
+  if (user && (await bcrypt.compare(password, user.password))) {
     generateToken(res, user.id);
 
     res.status(201).json({
@@ -57,14 +69,14 @@ const authUser = asyncHandler(async (req, res) => {
       email: user.email,
     });
   } else {
-    res.status(401);
+    res.status(500);
     throw new Error("Invalid email or password");
   }
 });
 
 const updateUserProfile = asyncHandler(async (req, res) => {
   const user = await Prisma.user.findUnique({
-    where: { id: req.body.id },
+    where: { id: req.body.user.id },
   });
 
   if (user) {
@@ -76,11 +88,11 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     }
 
     const updatedUser = await Prisma.user.update({
-      where: { id: req.body.id },
+      where: { id: req.body.user.id },
       data: { ...user },
     });
 
-    res.json({
+    res.status(200).json({
       id: updatedUser.id,
       name: updatedUser.name,
       email: updatedUser.email,
@@ -97,15 +109,29 @@ const getUserProfile = asyncHandler(async (req, res) => {
   });
 
   const collections = await Prisma.collection.findMany({
-    where: { authorId: user?.id },
+    where: { authorId: req.body.user.id },
   });
 
   if (user) {
-    res.json({
+    res.status(200).json({
       id: user.id,
       name: user.name,
       email: user.email,
       collections: collections,
+    });
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
+});
+
+const deleteUserProfile = asyncHandler(async (req, res) => {
+  const user = await Prisma.user.delete({
+    where: { id: req.body.user.id },
+  });
+  if (user) {
+    res.status(200).json({
+      user,
     });
   } else {
     res.status(404);
@@ -127,4 +153,5 @@ export {
   updateUserProfile,
   getUserProfile,
   logoutUser,
+  deleteUserProfile,
 };

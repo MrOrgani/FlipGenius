@@ -5,17 +5,19 @@ import {
   logoutUser,
   registerUser,
   updateUserProfile,
+  deleteUserProfile,
 } from "../controllers/userController";
-import { protect } from "../middleware/authMiddleware";
+import { isAuth } from "../middleware/authMiddleware";
 
 const router = express.Router();
 
 router.post("/", registerUser);
-router.post("/auth", authUser);
+router.post("/signin", authUser);
 router.post("/logout", logoutUser);
 router
   .route("/profile")
-  .get(protect, getUserProfile)
-  .put(protect, updateUserProfile);
+  .get(isAuth, getUserProfile)
+  .put(isAuth, updateUserProfile)
+  .delete(isAuth, deleteUserProfile);
 
 export { router };
