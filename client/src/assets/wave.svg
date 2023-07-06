@@ -1,9 +1,0 @@
-<svg id="visual" viewBox="0 0 960 540" width="960" height="540" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
-  <defs>
-    <linearGradient id="myGradient" gradientTransform="rotate(90)">
-      <stop offset="5%"  stop-color="rgba(108,99,255, 0)"/>
-      <stop offset="95%"  stop-color="rgba(156,55,230, .44)" />
-    </linearGradient>
-  </defs>
-<path d="M0 419L40 438.7C80 458.3 160 497.7 240 450C320 402.3 400 267.7 480 197.8C560 128 640 123 720 138.5C800 154 880 190 920 208L960 226L960 541L920 541C880 541 800 541 720 541C640 541 560 541 480 541C600 541 320 541 240 541C160 541 80 541 40 541L0 541Z" fill="url('#myGradient')" stroke-linecap="round" stroke-linejoin="miter"></path>
-</svg>

@@ -1,6 +1,5 @@
-import { useEffect } from "react";
-import { useSelector } from "react-redux";
 import NavBar from "../components/NavBar";
+import WaveSVG from "../assets/dots.svg";
 
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
 
@@ -21,6 +20,9 @@ function App() {
     <div className={"relative flex min-h-screen flex-col"}>
       <NavBar />
       <Outlet />
+      <div className="pointer-events-none absolute opacity-80">
+        <img className="h-screen object-cover opacity-80" src={WaveSVG} />
+      </div>
     </div>
   );
 }
