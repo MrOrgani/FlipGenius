@@ -4,7 +4,7 @@
   "description": "A learning application by flipping memory cards",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "backend-test": "cd server && npm run test"
   },
   "author": "Maxime Organi",
   "license": "ISC"
