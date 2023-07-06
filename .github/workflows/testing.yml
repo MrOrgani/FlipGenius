@@ -19,6 +19,8 @@ jobs:
       - name: BACKEND - npm install
         run: cd ./server && npm ci
       - name: BACKEND - test
+        with:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: npm run backend-test
       - name: FRONTEND - npm install
         run: cd ./client && npm ci
